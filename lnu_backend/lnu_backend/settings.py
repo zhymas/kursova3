@@ -1,5 +1,6 @@
 from pathlib import Path
 from dotenv import load_dotenv
+from config import HOST, PASSWORD, USER, DB_NAME, PORT
 import os
 
 load_dotenv()
@@ -54,11 +55,16 @@ TEMPLATES = [
 WSGI_APPLICATION = "lnu_backend.wsgi.application"
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': DB_NAME,
+            'USER': USER, 
+            'PASSWORD': PASSWORD, 
+            'HOST': HOST, 
+            'PORT': PORT,  
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
