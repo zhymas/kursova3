@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv('PROJECT_SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.60.109.76', 'localhost']
+ALLOWED_HOSTS = ['13.60.109.76', 'localhost', 'api.apiv1lnu.pp.ua']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
