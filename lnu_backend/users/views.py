@@ -5,4 +5,4 @@ from rest_framework import status
 class HomeResponse(APIView):
     
     def get(self, request):
-        return Response({"status": True, "message": "42 LNU CURSOVA"}, status=status.HTTP_200_OK)
+        return Response({"status": True, "message": "I reject your sadness"}, status=status.HTTP_200_OK)

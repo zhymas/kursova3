@@ -1,5 +1,6 @@
 from pathlib import Path
 from dotenv import load_dotenv
+from config import HOST, PASSWORD, USER, DB_NAME, PORT
 import os
 
 load_dotenv()
@@ -10,7 +11,7 @@ SECRET_KEY = os.getenv('PROJECT_SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['13.60.109.76', 'localhost', 'api.apiv1lnu.pp.ua', 'apiv1lnu.pp.ua']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -54,11 +55,16 @@ TEMPLATES = [
 WSGI_APPLICATION = "lnu_backend.wsgi.application"
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': DB_NAME,
+            'USER': USER, 
+            'PASSWORD': PASSWORD, 
+            'HOST': HOST, 
+            'PORT': PORT,  
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -86,3 +92,12 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ]
+}
