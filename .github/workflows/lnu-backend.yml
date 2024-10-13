@@ -16,6 +16,7 @@ jobs:
         python-version: [3.12.6]
 
     steps:
+    - name: Checkout
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
@@ -25,4 +26,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r lnu_backend/requirements.txt
-        echo 'Success'
+    - name: Lint
+      run: |
+        pip install flake8 flake8-bugbear pep8-naming
+        flake8 lnu_backend
+  lint:
+
+
+
