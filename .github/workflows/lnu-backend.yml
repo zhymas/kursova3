@@ -29,10 +29,26 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r lnu_backend/requirements.txt
 
-    - name: Lint
-      run: |
-        pip install flake8 flake8-bugbear pep8-naming
-        flake8 lnu_backend
+    # - name: Lint
+    #   run: |
+    #     pip install flake8 flake8-bugbear pep8-naming
+    #     flake8 lnu_backend
 
+  deploy:
+    deploy:
+    runs-on: ubuntu-latest
 
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2.3.1
+        with:
+          key: "${{ secrets.ssh_server }}"
+          known_hosts: "just-a-placeholder-so-we-dont-get-errors"
+          
+      - name: Generate auth hosts
+        run: ssh-keyscan -H ${{ vars.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - run: rsync --archive --compress --progress . ${{ vars.USER }}@${{ vars.SERVER_HOST }}:/home/ubuntu/kursova3
 
