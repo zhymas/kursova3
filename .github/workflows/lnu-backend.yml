@@ -30,7 +30,6 @@ jobs:
       run: |
         pip install flake8 flake8-bugbear pep8-naming
         flake8 lnu_backend
-  lint:
 
 
 
