@@ -35,7 +35,6 @@ jobs:
     #     flake8 lnu_backend
 
   deploy:
-    deploy:
     runs-on: ubuntu-latest
 
     steps:
