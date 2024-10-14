@@ -5,5 +5,5 @@ from rest_framework import status
 class HomeResponse(APIView):
     
     def get(self, request):
-        return Response({"status": True, "message": "I reject your sadness"}, 
+        return Response({"status": True, "message": "Deploy check"}, 
                         status=status.HTTP_200_OK)
