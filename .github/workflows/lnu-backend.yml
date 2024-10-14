@@ -53,6 +53,5 @@ jobs:
       - run: rsync --archive --compress --progress . ${{ vars.USER }}@${{ vars.SERVER_HOST }}:/home/ubuntu/kursova3
 
       - name: Restart Gunicorn
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ vars.USER }}@${{ vars.SERVER_HOST }} "sudo systemctl restart gunicorn"
+        run: ssh -o StrictHostKeyChecking=no ${{ vars.USER }}@${{ vars.SERVER_HOST }} "sudo systemctl restart gunicorn"
 
