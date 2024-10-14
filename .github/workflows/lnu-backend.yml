@@ -31,7 +31,7 @@ jobs:
     
     - name: Build the project
       run: |
-        python manage.py runserver
+        python lnu_backend/manage.py runserver
 
     # - name: Lint
     #   run: |
