@@ -43,6 +43,13 @@ jobs:
     - name: Show config.ini content
       run: cat lnu_backend/config/config.ini
 
+    - name: Show current directory
+      run: pwd
+
+    - name: List files in lnu_backend/config
+      run: ls -la lnu_backend/config/
+
+
     - name: Build the project
       run: |
         python lnu_backend/manage.py runserver
