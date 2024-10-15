@@ -39,6 +39,9 @@ jobs:
         dbname = ${{ secrets.MY_SERVICE_DBNAME }}
         port = ${{ secrets.MY_SERVICE_PORT }}
         EOF
+    
+    - name: Show config.ini content
+      run: cat lnu_backend/config/config.ini
 
     - name: Build the project
       run: |
