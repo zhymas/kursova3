@@ -29,16 +29,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r lnu_backend/requirements.txt
     
-    - name: Create config.ini
-        run: |
-          cat <<EOF > lnu_backend/config/config.ini
-          [my_service]
-          host = ${{ secrets.MY_SERVICE_HOST }}
-          user = ${{ secrets.MY_SERVICE_USER }}
-          password = ${{ secrets.MY_SERVICE_PASSWORD }}
-          dbname = ${{ secrets.MY_SERVICE_DBNAME }}
-          port = ${{ secrets.MY_SERVICE_PORT }}
-          EOF
+    - name: Create config.ini file
+      run: |
+        cat <<EOF > lnu_backend/config/config.ini
+        [my_service]
+        host = ${{ secrets.MY_SERVICE_HOST }}
+        user = ${{ secrets.MY_SERVICE_USER }}
+        password = ${{ secrets.MY_SERVICE_PASSWORD }}
+        dbname = ${{ secrets.MY_SERVICE_DBNAME }}
+        port = ${{ secrets.MY_SERVICE_PORT }}
+        EOF
 
     - name: Build the project
       run: |
@@ -69,4 +69,3 @@ jobs:
 
       - name: Restart Gunicorn
         run: ssh -o StrictHostKeyChecking=no ${{ vars.USER }}@${{ vars.SERVER_HOST }} "sudo systemctl restart gunicorn"
-
