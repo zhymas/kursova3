@@ -40,10 +40,10 @@ jobs:
         port = ${{ secrets.MY_SERVICE_PORT }}
         EOF
 
-    - name: Build the project
-      run: |
-        cd lnu_backend
-        python manage.py runserver
+    # - name: Build the project
+    #   run: |
+    #     cd lnu_backend
+    #     python manage.py runserver
 
     # - name: Lint
     #   run: |
