@@ -1,72 +1,72 @@
-name: Django CI
+# name: Django CI
 
-on:
-  push:
-    branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
+# on:
+#   push:
+#     branches: [ "dev" ]
+#   pull_request:
+#     branches: [ "dev" ]
 
-jobs:
-  build:
+# jobs:
+#   build:
 
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 1
-      matrix:
-        python-version: [3.12.6]
+#     runs-on: ubuntu-latest
+#     strategy:
+#       max-parallel: 1
+#       matrix:
+#         python-version: [3.12.6]
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4 
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v4 
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
+#     - name: Set up Python ${{ matrix.python-version }}
+#       uses: actions/setup-python@v3
+#       with:
+#         python-version: ${{ matrix.python-version }}
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r lnu_backend/requirements.txt
+#     - name: Install Dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install -r lnu_backend/requirements.txt
     
-    - name: Create config.ini file
-      run: |
-        cat <<EOF > lnu_backend/config/config.ini
-        [my_service]
-        host = ${{ secrets.MY_SERVICE_HOST }}
-        user = ${{ secrets.MY_SERVICE_USER }}
-        password = ${{ secrets.MY_SERVICE_PASSWORD }}
-        dbname = ${{ secrets.MY_SERVICE_DBNAME }}
-        port = ${{ secrets.MY_SERVICE_PORT }}
-        EOF
+#     - name: Create config.ini file
+#       run: |
+#         cat <<EOF > lnu_backend/config/config.ini
+#         [my_service]
+#         host = ${{ secrets.MY_SERVICE_HOST }}
+#         user = ${{ secrets.MY_SERVICE_USER }}
+#         password = ${{ secrets.MY_SERVICE_PASSWORD }}
+#         dbname = ${{ secrets.MY_SERVICE_DBNAME }}
+#         port = ${{ secrets.MY_SERVICE_PORT }}
+#         EOF
 
-    # - name: Build the project
-    #   run: |
-    #     cd lnu_backend
-    #     python manage.py runserver
+#     # - name: Build the project
+#     #   run: |
+#     #     cd lnu_backend
+#     #     python manage.py runserver
 
-    # - name: Lint
-    #   run: |
-    #     pip install flake8 flake8-bugbear pep8-naming
-    #     flake8 lnu_backend
+#     # - name: Lint
+#     #   run: |
+#     #     pip install flake8 flake8-bugbear pep8-naming
+#     #     flake8 lnu_backend
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
+#   deploy:
+#     runs-on: ubuntu-latest
+#     needs: build
 
-    steps:
-      - uses: actions/checkout@v3
+#     steps:
+#       - uses: actions/checkout@v3
 
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2.3.1
-        with:
-          key: "${{ secrets.ssh_server }}"
-          known_hosts: "just-a-placeholder-so-we-dont-get-errors"
+#       - name: Install SSH Key
+#         uses: shimataro/ssh-key-action@v2.3.1
+#         with:
+#           key: "${{ secrets.ssh_server }}"
+#           known_hosts: "just-a-placeholder-so-we-dont-get-errors"
           
-      - name: Generate auth hosts
-        run: ssh-keyscan -H ${{ vars.SERVER_HOST }} >> ~/.ssh/known_hosts
+#       - name: Generate auth hosts
+#         run: ssh-keyscan -H ${{ vars.SERVER_HOST }} >> ~/.ssh/known_hosts
 
-      - run: rsync --archive --compress --progress . ${{ vars.USER }}@${{ vars.SERVER_HOST }}:/home/ubuntu/kursova3
+#       - run: rsync --archive --compress --progress . ${{ vars.USER }}@${{ vars.SERVER_HOST }}:/home/ubuntu/kursova3
 
-      - name: Restart Gunicorn
-        run: ssh -o StrictHostKeyChecking=no ${{ vars.USER }}@${{ vars.SERVER_HOST }} "sudo systemctl restart gunicorn"
+#       - name: Restart Gunicorn
+#         run: ssh -o StrictHostKeyChecking=no ${{ vars.USER }}@${{ vars.SERVER_HOST }} "sudo systemctl restart gunicorn"

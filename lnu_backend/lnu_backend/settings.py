@@ -2,16 +2,21 @@ from pathlib import Path
 from dotenv import load_dotenv
 from config import HOST, PASSWORD, USER, DB_NAME, PORT
 import os
+from ms_identity_web.configuration import AADConfig
+from ms_identity_web import IdentityWebPython
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 SECRET_KEY = os.getenv('PROJECT_SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.60.109.76', 'localhost', 'api.apiv1lnu.pp.ua', 'apiv1lnu.pp.ua']
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -21,7 +26,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "users"
+    "django_extensions",
+    "users",
+    "drf_yasg"
 ]
 
 MIDDLEWARE = [
@@ -32,7 +39,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "ms_identity_web.django.middleware.MsalMiddleware",
 ]
+
+AAD_CONFIG = AADConfig.parse_json(file_path='lnu_backend.config.json')
+MS_IDENTITY_WEB = IdentityWebPython(AAD_CONFIG)
 
 ROOT_URLCONF = "lnu_backend.urls"
 
@@ -54,16 +65,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "lnu_backend.wsgi.application"
 
+# DATABASES = {
+#     'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': DB_NAME,
+#             'USER': USER, 
+#             'PASSWORD': PASSWORD, 
+#             'HOST': HOST, 
+#             'PORT': PORT,  
+#     }
+# }
+
 DATABASES = {
     'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': DB_NAME,
-            'USER': USER, 
-            'PASSWORD': PASSWORD, 
-            'HOST': HOST, 
-            'PORT': PORT,  
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -99,5 +118,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }
