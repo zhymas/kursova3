@@ -12,3 +12,10 @@ config.ini
 pg_service.conf
 
 migrations/
+
+lnu_backend.config.json
+
+db.sqlite3
+
+cert.crt 
+cert.key
